@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель | AI-ассистент АГУ</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin-style.css">
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <div class="admin-logo">
+                <img src="https://fsa.rudn.ru/images/univer/agu/agu.png" alt="Логотип АГУ" width="50">
+                <h2>Административная панель</h2>
+            </div>
+            <button id="logoutBtn" class="logout-btn">Выйти</button>
+        </div>
+
+        <div class="admin-tabs">
+            <button class="tab-btn active" data-tab="parser">Парсер сайтов</button>
+            <button class="tab-btn" data-tab="storage">Хранилище</button>
+            <button class="tab-btn" data-tab="scan">Сканирование</button>
+            <button class="tab-btn" data-tab="settings">Настройки</button>
+        </div>
+
+        <!-- Вкладка: Парсер -->
+        <div id="parserTab" class="tab-content active">
+            <div class="card">
+                <h3>Парсинг образовательных документов</h3>
+                <button id="stopParseBtn" class="btn-danger" style="display: none;">Остановить парсер</button>
+                <p class="card-desc">Введите URL страницы для сбора PDF-документов</p>
+                <div class="parser-input-group">
+                    <input type="text" id="parseUrl" placeholder="https://www.adygnet.ru/sveden/education/" class="parser-input">
+                    <button id="startParseBtn" class="btn-primary">Начать парсинг</button>
+                </div>
+                <div id="parseResult" class="parse-result"></div>
+            </div>
+            <div class="card" id="parseProgressCard" style="display: none;">
+                <h3>Прогресс парсинга</h3>
+                <div style="width: 100%; background: #f0f0f0; border-radius: 10px; overflow: hidden;">
+                    <div id="parseProgressBar" style="width: 0%; height: 30px; background: #003399; color: white; text-align: center; line-height: 30px;">0%</div>
+                </div>
+                <div id="parseProgressStatus" style="margin-top: 10px; font-size: 14px; color: #666;">Ожидание...</div>
+                <div id="parseLog" style="font-size: 12px; margin-top: 10px; max-height: 150px; overflow-y: auto; background: #f5f5f5; padding: 8px; border-radius: 8px;"></div>
+            </div>
+        </div>
+
+        <!-- Вкладка: Хранилище -->
+        <div id="storageTab" class="tab-content">
+            <div class="card">
+                <div class="storage-header">
+                    <h3>Скачанные документы</h3>
+                    <div class="storage-actions">
+                        <button id="refreshStorageBtn" class="btn-secondary">Обновить</button>
+                        <button id="clearStorageBtn" class="btn-danger">Очистить всё</button>
+                    </div>
+                </div>
+                <div id="storageStats" class="storage-stats"></div>
+                <div class="search-box">
+                    <input type="text" id="searchDocs" placeholder="Поиск по названиям..." class="search-input">
+                </div>
+                <div id="documentsList" class="documents-list">
+                    <p class="text-muted">Загрузка...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Вкладка сканирования (обновленная) -->
+        <div id="scanTab" class="tab-content">
+            <h3>Управление базой данных</h3>
+            
+            <div class="settings-section">
+                <div class="settings-group">
+                    <label for="collectionName">Название коллекции:</label>
+                    <input type="text" id="collectionName" placeholder="university">
+                    <!-- <button id="clearCollectionBtn" class="btn btn-danger">Очистить коллекцию</button> -->
+                </div>
+            </div>
+            
+            <div class="scan-controls">
+                <button id="startScanProcessBtn" class="btn btn-primary">Загрузить документы в Qdrant</button>
+                <button id="stopScanProcessBtn" class="btn btn-danger" style="display: none;">Остановить</button>
+                <button id="refreshScanResultsBtn" class="btn btn-secondary">Обновить статистику</button>
+            </div>
+            
+            <div id="scanProgressCard" class="progress-card" style="display: none;">
+                <div class="progress-bar-container">
+                    <div id="scanProgressBar" class="progress-bar" style="width: 0%;">0%</div>
+                </div>
+                <div id="scanStatus" class="progress-status">Готов к загрузке...</div>
+                <div id="scanLog" class="log-container"></div>
+            </div>
+            
+            <div class="results-section">
+                <h4>Статистика загрузки</h4>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Документов в Qdrant</div>
+                        <div class="stat-value" id="scannedDocsCount">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Всего чанков</div>
+                        <div class="stat-value" id="scannedChunksCount">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Последнее обновление</div>
+                        <div class="stat-value" id="lastScanTime">-</div>
+                    </div>
+                </div>
+                
+                <h4>Недавно загруженные документы</h4>
+                <div id="recentDocsList" class="documents-list">
+                    <p class="text-muted">Нет данных</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Вкладка: Настройки -->
+        <div id="settingsTab" class="tab-content">
+            <div class="card">
+                <h3>Настройки парсера</h3>
+                <div class="settings-item">
+                    <label>Папка сохранения документов</label>
+                    <input type="text" id="savePath" class="settings-input" placeholder="Путь к папке">
+                    <button id="saveSettingsBtn" class="btn-secondary" style="margin-top: 10px;">Сохранить</button>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Информация о системе</h3>
+                <div id="systemInfo" class="system-info">
+                    <p><strong>Сервер:</strong> <span id="serverStatus">Проверка...</span></p>
+                    <p><strong>Всего документов:</strong> <span id="totalDocs">0</span></p>
+                    <p><strong>Общий размер:</strong> <span id="totalSize">0 MB</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="admin-script.js"></script>
+</body>
+</html>

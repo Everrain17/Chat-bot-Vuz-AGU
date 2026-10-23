@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-ассистент АГУ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<button id="adminBtn" style="
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #333;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 100;
+">Админ</button>
+
+<!-- Модальное окно -->
+<div id="adminModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000;">
+    <div style="background: white; padding: 30px; border-radius: 16px; width: 300px;">
+        <h3>Вход для администратора</h3>
+        <input type="text" id="adminLogin" placeholder="Логин" style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px;">
+        <input type="password" id="adminPassword" placeholder="Пароль" style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px;">
+        <button id="adminLoginBtn" style="width: 100%; padding: 10px; background: #003399; color: white; border: none; border-radius: 8px; cursor: pointer;">Войти</button>
+        <button id="closeModal" style="width: 100%; margin-top: 10px; padding: 8px; background: #ccc; border: none; border-radius: 8px; cursor: pointer;">Закрыть</button>
+    </div>
+</div>
+	<h1>
+    	<img src="https://fsa.rudn.ru/images/univer/agu/agu.png" alt="Логотип АГУ">
+       <span style="display: flex; flex-direction: column; text-align: left;">
+        <span style="font-size: 48px; font-weight: bold; text-align: center;">AI-ассистент</span>
+        <span style="font-size: 32px; color: darkblue;text-align: center;">Адыгейского Государственного Университета</span>
+    </span>
+	</h1>
+    <div class="container">
+        <div class="header">
+            
+            <p>Задайте вопрос про документы и регламенты университета</p>
+        </div>
+        
+        
+        <div class="input-section">
+            <div class="input-label">Ваш вопрос</div>
+            <div class="input-wrapper">
+                <input type="text" id="questionInput" placeholder="Например: когда начинается приемная комиссия?">
+                <button id="sendButton">Спросить</button>
+            </div>
+        </div>
+        
+        
+        <div class="examples">
+            <div class="examples-title">Примеры вопросов</div>
+            <div class="examples-grid" id="examplesGrid">
+                <span class="example-item">Сроки подачи документов на поступление</span>
+                <span class="example-item">Какие документы нужны для поступления?</span>
+                <span class="example-item">Общежитие для иногородних</span>
+                <span class="example-item">Какие дисциплины изучаются на прикладной математике?</span>
+				<span class="example-item">Какие достижения учитываются при поступлении?</span>
+				<span class="example-item">Куда подавать документы на поступление?</span>
+            </div>
+        </div>
+        <div class = "clear-chat-btn-container">
+		<button id="clearChatBtn" class="clear-chat-btn">Очистить</button>
+        </div>
+		
+		<div class="answers-section" id="answersSection">
+    </div>
+	<div class="loading" id="loadingIndicator" style="display: none;">
+    <span>Обработка запроса...</span>
+    <div class="loading-dots">
+        <span></span><span></span><span></span>
+    </div>
+</div>
+</div>
+   
+        <div class="footer">
+            Адыгейский государственный университет © 2026
+        </div>
+    </div>
+	<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+     <script src="script.js"></script>
+</body>
+</html>

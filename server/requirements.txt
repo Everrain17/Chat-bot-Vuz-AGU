@@ -1,0 +1,8 @@
+flask
+sentence-transformers
+qdrant-client
+pymupdf4llm
+langchain-text-splitters
+transformers
+requests
+beautifulsoup4
