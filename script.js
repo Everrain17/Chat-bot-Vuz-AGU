@@ -412,19 +412,53 @@ const widgetToggle = document.getElementById('widgetToggle');
 const widgetContainer = document.getElementById('widgetContainer');
 const widgetClose = document.getElementById('widgetClose');
 
-if (widgetToggle && widgetContainer) {
+let isWidgetOpen = false;
+let isAnimating = false;
+
+function openWidget() {
+    if (isAnimating || isWidgetOpen) return;
+    isAnimating = true;
+    isWidgetOpen = true;
+    widgetContainer.classList.remove('closing');
+    widgetContainer.classList.add('open');
+    setTimeout(() => { isAnimating = false; }, 300);
+}
+
+function closeWidget() {
+    if (isAnimating || !isWidgetOpen) return;
+    isAnimating = true;
+    widgetContainer.classList.add('closing');
+    setTimeout(() => {
+        widgetContainer.classList.remove('open', 'closing');
+        isWidgetOpen = false;
+        isAnimating = false;
+    }, 300);
+}
+
+if (widgetToggle) {
     widgetToggle.addEventListener('click', () => {
-        widgetContainer.classList.add('open');
-        widgetToggle.style.display = 'none';
+        if (isWidgetOpen) {
+            closeWidget();
+        } else {
+            openWidget();
+        }
     });
 }
 
-if (widgetClose && widgetContainer) {
+if (widgetClose) {
     widgetClose.addEventListener('click', () => {
-        widgetContainer.classList.remove('open');
-        if (widgetToggle) widgetToggle.style.display = 'flex';
+        closeWidget();
     });
 }
+
+// Закрытие по клику вне виджета
+document.addEventListener('click', (e) => {
+    if (isWidgetOpen && isAnimating === false) {
+        if (!widgetContainer.contains(e.target) && !widgetToggle.contains(e.target)) {
+            closeWidget();
+        }
+    }
+});
 document.addEventListener('DOMContentLoaded', function () {
     loadChatHistory();
 });

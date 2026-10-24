@@ -476,12 +476,11 @@ input:disabled {
     align-items: center;
     justify-content: center;
     z-index: 10000;
-    transition: background 0.2s, transform 0.2s;
+    transition: background 0.2s;
 }
 
 .widget-toggle:hover {
     background: #002277;
-    transform: scale(1.05);
 }
 
 .widget-container {
@@ -503,6 +502,33 @@ input:disabled {
 
 .widget-container.open {
     display: flex;
+    animation: slideUp 0.3s ease forwards;
+}
+
+.widget-container.closing {
+    animation: slideDown 0.3s ease forwards;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(30px);
+    }
 }
 
 .widget-header {
@@ -537,7 +563,6 @@ input:disabled {
     background: rgba(255, 255, 255, 0.2);
 }
 
-/* Адаптация контейнера под виджет */
 .widget-container .container {
     flex: 1;
     overflow-y: auto;
@@ -554,8 +579,75 @@ input:disabled {
     font-size: 12px;
     flex-shrink: 0;
 }
+.widget-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: white;
+    padding: 2px;
+    margin-right: 10px;
+}
+/* ========== ФИКС ЗАГОЛОВКА ВНУТРИ ВИДЖЕТА ========== */
+.widget-container h1 {
+    margin-left: 0 !important;
+    font-size: 16px !important;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
 
-/* Адаптив виджета для телефонов */
+.widget-container h1 img {
+    width: 36px !important;
+}
+
+.widget-container h1 span {
+    font-size: 12px !important;
+}
+
+.widget-container h1 span span:first-child {
+    font-size: 20px !important;
+}
+
+.widget-container h1 span span:last-child {
+    font-size: 14px !important;
+}
+
+/* ========== ФИКС ЛОГОТИПА В ШАПКЕ ========== */
+.widget-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: white;
+    padding: 3px;
+    object-fit: contain;
+}
+
+/* ========== ФИКС ОПИСАНИЯ ========== */
+.widget-container .header p {
+    font-size: 14px !important;
+}
+
+/* ========== ФИКС ПОЛЯ ВВОДА ========== */
+.widget-container .input-wrapper {
+    flex-direction: column;
+    gap: 8px;
+}
+
+.widget-container .input-wrapper input {
+    padding: 10px 12px;
+    font-size: 14px;
+}
+
+.widget-container .input-wrapper button {
+    padding: 10px;
+    font-size: 14px;
+}
+
+/* ========== ФИКС ПРИМЕРОВ ========== */
+.widget-container .example-item {
+    font-size: 12px;
+    padding: 6px 10px;
+}
 @media (max-width: 480px) {
     .widget-container {
         width: 100%;
@@ -566,7 +658,6 @@ input:disabled {
         border-radius: 0;
         border: none;
     }
-
     .widget-toggle {
         bottom: 15px;
         right: 15px;
