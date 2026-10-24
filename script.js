@@ -407,6 +407,24 @@ if (adminLoginBtn) {
         }
     };
 }
+// ========== ЛОГИКА ВИДЖЕТА ==========
+const widgetToggle = document.getElementById('widgetToggle');
+const widgetContainer = document.getElementById('widgetContainer');
+const widgetClose = document.getElementById('widgetClose');
+
+if (widgetToggle && widgetContainer) {
+    widgetToggle.addEventListener('click', () => {
+        widgetContainer.classList.add('open');
+        widgetToggle.style.display = 'none';
+    });
+}
+
+if (widgetClose && widgetContainer) {
+    widgetClose.addEventListener('click', () => {
+        widgetContainer.classList.remove('open');
+        if (widgetToggle) widgetToggle.style.display = 'flex';
+    });
+}
 document.addEventListener('DOMContentLoaded', function () {
     loadChatHistory();
 });
